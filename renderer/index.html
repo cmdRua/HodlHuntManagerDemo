@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>HodlHunt Manager — ДЕМО</title>
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">HODLHUNT <span>// DEMO</span></div>
+  <div class="ocean-info" id="oceanInfo">
+    <div class="ocean-dot" id="oceanDot"></div>
+    <span id="oceanMode">—</span>
+    <span class="sep-v"></span>
+    <span id="oceanBal" class="accent">—</span>
+    <span class="sep-v"></span>
+    <span id="oceanFish" class="dim">— рыб</span>
+  </div>
+</div>
+
+<!-- DEMO BANNER -->
+<div class="demo-banner" id="demoBanner">
+  🔒 ДЕМО — только просмотр океана. Полная версия (метки, охота, планировщик):
+  <span id="tgBannerLink" style="color:#ff8c00;font-weight:700;cursor:pointer;">@cmdRua</span>
+  &nbsp;|&nbsp; 1 day — $25 &nbsp;•&nbsp; 7 day — $100
+</div>
+
+<!-- MAIN -->
+<div class="main" style="flex-direction:column">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <button class="btn btn-default" id="btnRefresh">⟳ REFRESH</button>
+    <div class="v-sep"></div>
+    <input class="search-input" id="searchInput" type="text" placeholder="🔍 Поиск по нику...">
+    <div class="v-sep"></div>
+    <div class="filters">
+      <label class="chk"><input type="checkbox" id="fNoMark" checked> Скрыть помечен.</label>
+      <label class="chk"><input type="checkbox" id="fMinPriceOn"> Мин. цена ≥</label>
+      <input class="filter-num" id="fMinPrice" type="number" placeholder="SOL" step="0.01" disabled>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap" style="flex:1">
+    <div id="emptyMsg" class="empty-msg">
+      <div class="empty-icon">🌊</div>
+      <div>Нажми REFRESH для загрузки океана</div>
+    </div>
+    <table id="mainTable" style="display:none">
+      <thead>
+        <tr>
+          <th data-col="name"   id="th-name">Имя <span class="arr">↕</span></th>
+          <th>Метка</th>
+          <th data-col="value"  id="th-value">Цена SOL <span class="arr">↕</span></th>
+          <th data-col="timer"  id="th-timer">До жертвы <span class="arr">↕</span></th>
+          <th id="th-markexp">До конца метки</th>
+          <th data-col="wallet" id="th-wallet">Кошелёк <span class="arr">↕</span></th>
+          <th>Акт. рыбы</th>
+          <th>Акт. кошелька</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <div class="stat last" id="stMsg"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

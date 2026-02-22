@@ -1,0 +1,37 @@
+{
+  "name": "hodlhunt-demo",
+  "version": "1.0.0",
+  "description": "HodlHunt Demo — Ocean Scanner",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:portable": "electron-builder --win portable --x64 --config.directories.app=."
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.3",
+    "bs58": "^4.0.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.hodlhunt.demo",
+    "productName": "HodlHunt Demo",
+    "win": {
+      "target": [{ "target": "portable", "arch": ["x64"] }],
+      "icon": "renderer/icon.ico",
+      "executableName": "HodlHunt Demo"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!*.md"
+    ],
+    "extraResources": [
+      { "from": ".env", "to": "../.env" }
+    ]
+  },
+  "productName": "HodlHunt Demo"
+}
