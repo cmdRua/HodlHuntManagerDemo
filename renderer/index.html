@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<!-- CSP handled by Electron -->
+<title>HodlHunt Demo</title>
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-logo">HODLHUNT <span>// MANAGER</span> <span style="color:#ff8c00;font-size:11px;letter-spacing:2px;">DEMO VERSION</span></div>
+  <div class="ocean-info" id="oceanInfo">
+    <div class="ocean-dot" id="oceanDot"></div>
+    <span id="oceanMode">—</span>
+    <span class="sep-v"></span>
+    <span id="oceanBal" class="accent">—</span>
+    <span class="sep-v"></span>
+    <span id="oceanFish" class="dim">— рыб</span>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main">
+
+
+
+  <!-- RIGHT: OCEAN + SCHEDULER -->
+  <div class="panel-right">
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <button class="btn btn-default" id="btnRefresh">⟳ REFRESH</button>
+      <div class="v-sep"></div>
+
+      <input class="search-input" id="searchInput" type="text" placeholder="🔍 Поиск по нику...">
+      <div class="v-sep"></div>
+      <div class="filters">
+        <label class="chk"><input type="checkbox" id="fNoMark" checked> Скрыть помечен.</label>
+        <label class="chk"><input type="checkbox" id="fMinPriceOn"> Мин. цена ≥</label>
+        <input class="filter-num" id="fMinPrice" type="number" placeholder="SOL" step="0.01" disabled>
+      </div>
+    </div>
+
+    <!-- TABLE + SCHEDULER SIDE BY SIDE -->
+    <div class="content-row">
+
+      <!-- TABLE -->
+      <div class="table-wrap">
+        <div id="emptyMsg" class="empty-msg">
+          <div class="empty-icon">🌊</div>
+          <div>Нажми REFRESH для загрузки океана</div>
+        </div>
+        <table id="mainTable" style="display:none">
+          <thead>
+            <tr>
+              <th data-col="name"   id="th-name">Имя <span class="arr">↕</span></th>
+              <th>Метка</th>
+              <th data-col="value"  id="th-value">Цена SOL <span class="arr">↕</span></th>
+              <th data-col="timer"  id="th-timer">До жертвы <span class="arr">↕</span></th>
+              <th id="th-markexp">До конца метки</th>
+              <th data-col="wallet" id="th-wallet">Кошелёк <span class="arr">↕</span></th>
+              <th>Акт. рыбы</th>
+              <th>Акт. кошелька</th>
+
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+
+
+    </div><!-- /content-row -->
+  </div>
+</div>
+
+<!-- HUNT NOTIFICATION -->
+<div class="hunt-notify" id="huntNotify" style="display:none">
+  <span id="huntNotifyText">🦈 СКОРО ОХОТА!</span>
+  <button id="huntNotifyClose">×</button>
+</div>
+
+<div class="statusbar"><div class="stat last" id="stMsg"></div></div>
+</div>
+
+<!-- Demo: Hunt/Mark modals removed -->
+
+<script src="app.js"></script>
+</body>
+</html>

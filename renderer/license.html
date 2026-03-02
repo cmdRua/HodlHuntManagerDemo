@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Активация</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080b0f;
+    color: #c8d8e8;
+    font-family: 'Rajdhani', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .box {
+    width: 400px;
+    border: 1px solid #1e2d3d;
+    border-radius: 8px;
+    padding: 32px 36px;
+    background: #0d1117;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* neon top border accent */
+  .box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .logo img { width: 48px; height: 48px; border-radius: 50%; }
+  .logo-text { font-family: 'Share Tech Mono', monospace; }
+  .logo-text .name { font-size: 16px; color: #00d4ff; letter-spacing: 3px; }
+  .logo-text .sub  { font-size: 11px; color: #3a5060; letter-spacing: 1px; }
+
+  h2 {
+    font-size: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    color: #6a8a9a;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .error-msg {
+    background: rgba(255, 60, 90, 0.1);
+    border: 1px solid rgba(255, 60, 90, 0.3);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #ff3c5a;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  label {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #3a5060;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  input {
+    width: 100%;
+    background: #080b0f;
+    border: 1px solid #1e2d3d;
+    color: #c8d8e8;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    outline: none;
+    letter-spacing: 2px;
+    text-align: center;
+    transition: border-color .2s;
+    text-transform: uppercase;
+  }
+  input:focus { border-color: #00d4ff; }
+  input::placeholder { color: #243447; letter-spacing: 4px; }
+
+  .hint {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #3a5060;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 11px;
+    background: transparent;
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  button:hover   { background: rgba(0,212,255,.08); }
+  button:active  { background: rgba(0,212,255,.15); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+
+  .spinner {
+    display: inline-block;
+    width: 11px; height: 11px;
+    border: 2px solid #243447;
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: sp .7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes sp { to { transform: rotate(360deg); } }
+
+  .promo {
+    margin-top: 24px;
+    padding: 14px 16px;
+    background: rgba(255,140,0,.05);
+    border: 1px solid rgba(255,140,0,.2);
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #8aa8b8;
+    line-height: 1.7;
+    text-align: center;
+  }
+  .promo .tg-link {
+    color: #ff8c00;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color .15s;
+  }
+  .promo .tg-link:hover { color: #ffaa33; text-decoration: underline; }
+  .promo .prices {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  .promo .price {
+    background: rgba(255,140,0,.08);
+    border: 1px solid rgba(255,140,0,.2);
+    border-radius: 4px;
+    padding: 4px 12px;
+    color: #ff8c00;
+    font-weight: 700;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">
+    <img src="icon.png" alt="shark">
+    <div class="logo-text">
+      <div class="name">HODLHUNT</div>
+      <div class="sub">// MANAGER</div>
+    </div>
+  </div>
+
+  <h2>Активация лицензии</h2>
+
+  <div class="error-msg" id="errMsg"></div>
+
+  <label>Лицензионный ключ</label>
+  <input id="keyInput" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19" spellcheck="false" autocomplete="off">
+  <div class="hint">Формат: XXXX-XXXX-XXXX-XXXX</div>
+
+  <button id="btnActivate">Активировать</button>
+
+  <div class="promo">
+    Разработчики сказали что скрипты и боты тут не помогут —<br>
+    я принял это как вызов и сделал 🦈<br>
+    За ключами: <a class="tg-link" id="tgLink">Телеграмм @cmdRua</a>
+    <div class="prices">
+      <span class="price">1 day — $25</span>
+      <span class="price">7 day — $100</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const input = document.getElementById('keyInput');
+  const btn   = document.getElementById('btnActivate');
+  const err   = document.getElementById('errMsg');
+
+  // Auto-format input as user types: insert dashes every 4 chars
+  input.addEventListener('input', () => {
+    let v = input.value.replace(/[^A-Z0-9a-z]/gi, '').toUpperCase();
+    // Insert dashes at positions 4, 8, 12, 16
+    v = v.match(/.{1,4}/g)?.join('-') || v;
+    input.value = v;
+  });
+
+  // Enter key
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') btn.click();
+  });
+
+  // Show error from previous session (expired key etc)
+  window.api.getLicenseError?.().then(msg => {
+    if (msg) showError(msg);
+  });
+
+  btn.addEventListener('click', async () => {
+    const key = input.value.trim();
+    if (!key) { showError('Введи лицензионный ключ'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Проверяем...';
+    err.classList.remove('show');
+
+    const result = await window.api.activateLicense(key);
+
+    if (result.valid) {
+      btn.textContent = `✓ Активировано (осталось ${result.daysLeft} дн.)`;
+      btn.style.borderColor = '#00ff88';
+      btn.style.color = '#00ff88';
+    } else {
+      showError(result.reason || 'Неверный ключ');
+      btn.disabled = false;
+      btn.textContent = 'Активировать';
+    }
+  });
+
+  function showError(msg) {
+    err.textContent = '✕ ' + msg;
+    err.classList.add('show');
+  }
+
+  // Open Telegram link
+  document.getElementById('tgLink').addEventListener('click', () => {
+    window.api.openExternal('https://t.me/cmdRua');
+  });
+</script>
+</body>
+</html>

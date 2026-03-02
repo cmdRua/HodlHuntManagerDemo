@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Настройка</title>
+<style>
+html, body {
+  width: 100%; height: 100%;
+  margin: 0; padding: 0;
+  background: #080b0f;
+  color: #c8d8e8;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+* { box-sizing: border-box; }
+
+.box {
+  width: 420px;
+  background: #0d1117;
+  border: 1px solid #1e2d3d;
+  border-radius: 8px;
+  padding: 28px 32px;
+}
+
+.title {
+  font-size: 18px;
+  color: #00d4ff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.sub {
+  font-size: 11px;
+  color: #3a5060;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+
+.field { margin-bottom: 16px; }
+label {
+  display: block;
+  font-size: 11px;
+  color: #3a5060;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+input {
+  width: 100%;
+  background: #080b0f;
+  border: 1px solid #1e2d3d;
+  color: #c8d8e8;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  padding: 9px 12px;
+  border-radius: 4px;
+  outline: none;
+}
+input:focus { border-color: #00d4ff; }
+input::placeholder { color: #243447; }
+
+.hint {
+  font-size: 10px;
+  color: #3a5060;
+  margin-top: 5px;
+}
+.hint a { color: #00d4ff; cursor: pointer; }
+
+.err {
+  color: #ff3c5a;
+  font-size: 11px;
+  margin-bottom: 12px;
+  display: none;
+  padding: 8px;
+  background: rgba(255,60,90,0.1);
+  border-radius: 4px;
+}
+.err.show { display: block; }
+
+button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #00d4ff;
+  color: #00d4ff;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover { background: rgba(0,212,255,0.08); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.env-path {
+  font-size: 10px;
+  color: #243447;
+  text-align: center;
+  margin-top: 12px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+}
+.env-path:hover { color: #3a5060; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="title">🦈 HodlHunt</div>
+  <div class="sub">// Первоначальная настройка</div>
+
+  <div class="err" id="err"></div>
+
+  <div class="field">
+    <label>Приватный ключ кошелька</label>
+    <input id="privkey" type="password" placeholder="Вставь свой приватный ключ (base58 или JSON)...">
+    <div class="hint">Хранится локально, никуда не отправляется</div>
+  </div>
+
+  <div class="field">
+    <label>RPC URL (необязательно)</label>
+    <input id="rpc" type="text" value="https://api.mainnet-beta.solana.com">
+  </div>
+
+  <button id="btnSave">СОХРАНИТЬ И ПРОДОЛЖИТЬ</button>
+  <div class="env-path" id="envPathHint">Нажми чтобы открыть папку с настройками</div>
+</div>
+
+<script>
+  window.api.getEnvPath().then(p => {
+    document.getElementById('envPathHint').textContent = '📁 ' + p;
+  }).catch(() => {});
+
+  document.getElementById('envPathHint').addEventListener('click', () => {
+    window.api.openEnvFolder();
+  });
+
+  document.getElementById('btnSave').addEventListener('click', async () => {
+    const rpc     = document.getElementById('rpc').value.trim();
+    const privkey = document.getElementById('privkey').value.trim();
+    const early   = 7; // вшито
+    const err     = document.getElementById('err');
+
+    if (!privkey) {
+      err.textContent = '✕ Введи приватный ключ';
+      err.classList.add('show');
+      return;
+    }
+    err.classList.remove('show');
+
+    const btn = document.getElementById('btnSave');
+    btn.disabled = true;
+    btn.textContent = 'СОХРАНЯЕМ...';
+
+    const result = await window.api.saveConfig(rpc, privkey, early);
+    if (!result.ok) {
+      err.textContent = '✕ Ошибка: ' + result.error;
+      err.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'СОХРАНИТЬ И ПРОДОЛЖИТЬ';
+    }
+  });
+</script>
+</body>
+</html>
